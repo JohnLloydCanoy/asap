@@ -1,1 +1,24 @@
-venv
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables (Crucial for security)
+.env
+.env.*
+
+# IDE and OS metadata
+.vscode/
+.DS_Store
+.idea/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
