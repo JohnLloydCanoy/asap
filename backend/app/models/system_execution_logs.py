@@ -1,47 +1,56 @@
-from sqlalchemy import Column, Integer, ForeignKey, CheckConstraint, TIMESTAMP
-from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from sqlalchemy import Column, String, Integer, ForeignKey, CheckConstraint, TIMESTAMP
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-
-# Import the shared Base engine instance from your core folder
 from ..core.database import Base
 
 
-class PostAnalytics(Base):
+class SystemExecutionLog(Base):
     """
-    SQLAlchemy model representing the 'post_analytics' table.
-    Tracks real-time performance and engagement telemetry for deployed posts.
+    SQLAlchemy model representing the 'system_execution_logs' table.
+    Tracks internal background worker performance and task execution states.
     """
-    __tablename__ = "post_analytics"
+    __tablename__ = "system_execution_logs"
 
-    # Core Identifier & One-to-One Foreign Key Link
-    post_id = Column(
+    # Core Identifier
+    id = Column(
         UUID(as_uuid=True), 
-        ForeignKey("scheduled_posts.id", ondelete="CASCADE"), 
-        primary_key=True,  # Acts as both the Foreign Key and Primary Key
-        nullable=False
+        primary_key=True, 
+        default=uuid.uuid4, 
+        server_default=func.gen_random_uuid()
+    )
+    
+    # Notice ondelete="SET NULL" and nullable=True here!
+    user_id = Column(
+        UUID(as_uuid=True), 
+        ForeignKey("users.id", ondelete="SET NULL"), 
+        nullable=True
     )
 
-    # Engagement Telemetry Counters
-    likes = Column(Integer, nullable=False, default=0, server_default="0")
-    shares = Column(Integer, nullable=False, default=0, server_default="0")
-    comments = Column(Integer, nullable=False, default=0, server_default="0")
+    # Execution Metadata
+    task_name = Column(String(100), nullable=False, index=True)
+    status = Column(String(20), nullable=False, index=True)
+    
+    # Payload for debugging and metrics
+    payload = Column(JSONB, nullable=True)
+    execution_time_ms = Column(Integer, nullable=True)
 
-    # Sync Tracking Timestamp
-    last_synced_at = Column(
+    # Timestamp
+    trigger_at = Column(
         TIMESTAMP(timezone=True), 
         nullable=False, 
         default=func.now(), 
-        server_default=func.now(), 
-        onupdate=func.now()
+        server_default=func.now()
     )
 
-    # Database Level Constraints (Prevents negative counts)
+    # Database Level Constraints
     __table_args__ = (
-        CheckConstraint("likes >= 0", name="check_likes_non_negative"),
-        CheckConstraint("shares >= 0", name="check_shares_non_negative"),
-        CheckConstraint("comments >= 0", name="check_comments_non_negative"),
+        CheckConstraint(
+            "status IN ('SUCCESS', 'FAILURE')", 
+            name="check_valid_log_status"
+        ),
     )
 
     # ORM Relationship
-    post = relationship("ScheduledPost", back_populates="analytics")
+    user = relationship("User", back_populates="execution_logs")
