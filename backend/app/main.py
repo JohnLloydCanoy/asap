@@ -1,10 +1,12 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from .core.database import get_db
+from app.api import auth
 
-app = FastAPI()
+app = FastAPI(title="ASAP API")
+app.include_router(auth.router)
 
-@app.get("/items/")
-def read_items(db: Session = Depends(get_db)):
-    # Database Logic
-    return {"message": "Database session successfully injected!"}
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the ASAP API!"}
