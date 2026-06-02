@@ -11,7 +11,13 @@ from dotenv import load_dotenv
 from app.core.database import Base
 
 # IMPORT ALL MODELS HERE SO ALEMBIC CAN DETECT THEM FOR AUTOGENERATE
-from app.models.user import User  # Registers the 'users' table structure
+from app.models.user import User 
+from app.models.social_accounts import SocialAccount
+from app.models.scheduled_posts import ScheduledPost
+from app.models.ai_brand_context import AIBrandContext
+from app.models.post_analytics import PostAnalytics
+from app.models.system_execution_logs import SystemExecutionLog
+
 
 # Execute the environmental variable lookup
 load_dotenv()
