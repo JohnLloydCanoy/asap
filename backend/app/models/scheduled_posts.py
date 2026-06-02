@@ -75,5 +75,7 @@ class ScheduledPost(Base):
     )
 
     # ORM Relationships
+    # ORM Relationships
     user = relationship("User", back_populates="scheduled_posts")
     social_account = relationship("SocialAccount", back_populates="scheduled_posts")
+    analytics = relationship("PostAnalytics", back_populates="post", uselist=False, cascade="all, delete-orphan")
