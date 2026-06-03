@@ -35,8 +35,9 @@ def create_scheduled_post(
     new_post = ScheduledPost(
         content=post_in.content,
         media_urls=post_in.media_urls,
-        scheduled_time=post_in.scheduled_time,
-        status="scheduled", # Default status
+        scheduled_for=post_in.scheduled_for,
+        is_recurring=post_in.is_recurring,
+        status="PENDING",
         social_account_id=social_account.id,
         user_id=current_user.id
     )
