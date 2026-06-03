@@ -8,7 +8,8 @@ logger = logging.getLogger(__name__)
 class BlueskyService:
     def __init__(self):
         self.base_url = Settings().BLUESKY_BASE_URL
-
+        
+        
     def publish_post(self, handle: str, app_password: str, content: str) -> Optional[str]:
         """
         Authenticates with Bluesky, creates a record, and returns the live post URL.
