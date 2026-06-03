@@ -14,10 +14,14 @@ class BlueskyService:
         """
         Authenticates with Bluesky, creates a record, and returns the live post URL.
         """
+        # Sanitize inputs: remove whitespaces and hidden control characters
+        handle = "".join(ch for ch in handle if ch.isprintable()).strip()
+        app_password = "".join(ch for ch in app_password if ch.isprintable()).strip()
+
         try:
             with httpx.Client() as client:
-
-                logger.info(f"🔑 Authenticating session for Bluesky handle: {handle}")
+                # 1. Create a session to get an access token
+                logger.info(f"🔑 Authenticating session for Bluesky handle: '{handle}'")
                 session_res = client.post(
                     f"{self.base_url}/com.atproto.server.createSession",
                     json={"identifier": handle, "password": app_password}
@@ -28,7 +32,7 @@ class BlueskyService:
                     return None
                 
                 session_data = session_res.json()
-                access_token = session_data["access_jwt"]
+                access_token = session_data["accessJwt"]
                 did = session_data["did"] # The unique decentralized identifier for the user
 
                 headers = {"Authorization": f"Bearer {access_token}"}
