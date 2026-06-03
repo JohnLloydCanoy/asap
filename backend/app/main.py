@@ -1,15 +1,36 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
-from app.api import auth, users
 from sqlalchemy.orm import Session
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from app.api import auth, users, social_accounts, scheduled_posts
+from app.workers.tasks import process_pending_posts
 from .core.database import get_db
-from app.api import auth
 import app.models
 
-app = FastAPI(title="ASAP API")
-app.include_router(auth.router)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # What happens when the server STARTS:
+    print("⏳ Starting background worker...")
+    scheduler = BackgroundScheduler()
+    # Run the worker function every 60 seconds
+    scheduler.add_job(process_pending_posts, 'interval', seconds=60)
+    scheduler.start()
+    
+    yield 
+    
+
+    print("🛑 Shutting down background worker...")
+    scheduler.shutdown()
+
+
+app = FastAPI(title="ASAP API", lifespan=lifespan)
+
 
 app.include_router(auth.router)
 app.include_router(users.router)
+app.include_router(social_accounts.router)
+app.include_router(scheduled_posts.router)
 
 @app.get("/")
 def read_root():

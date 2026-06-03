@@ -47,7 +47,7 @@ class SocialAccount(Base):
     # Database Level Constraints
     __table_args__ = (
         CheckConstraint(
-            "platform IN ('facebook', 'x', 'linkedin', 'instagram', 'tiktok')", 
+            "platform IN ('Bluesky', 'Discord', 'Telegram', 'Mastodon', 'Slack', 'Nostr')", 
             name="check_valid_social_platform"
         ),
     )
