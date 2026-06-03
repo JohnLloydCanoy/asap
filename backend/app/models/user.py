@@ -29,7 +29,7 @@ class User(Base):
     last_name = Column(String(50), nullable=False)
     middle_name = Column(String(50), nullable=False)  
     suffixes = Column(String(50), nullable=True)    
-    cell_number = Column(String(10), nullable=True, unique=True)
+    cell_number = Column(String(20), nullable=True, unique=True)
     sex = Column(String(10), nullable=True)
 
     # Regional & Audit Telemetry
@@ -57,8 +57,9 @@ class User(Base):
         Index("ix_users_email", "email"),  
     )
 
-    # ORM Relationships (Links ASAP components back to this user instance)
+
+    # ORM Relationships
     social_accounts = relationship("SocialAccount", back_populates="user", cascade="all, delete-orphan")
-    brand_contexts = relationship("AIBrandContext", back_populates="user", uselist=False, cascade="all, delete-orphan")
     scheduled_posts = relationship("ScheduledPost", back_populates="user", cascade="all, delete-orphan")
-    execution_logs = relationship("SystemExecutionLog", back_populates="user")
+    brand_contexts = relationship("AIBrandContext", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    execution_logs = relationship("SystemExecutionLog", back_populates="user", cascade="all, delete-orphan")
