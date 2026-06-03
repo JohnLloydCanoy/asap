@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from app.api import auth, users, social_accounts
+from app.api import auth, users, social_accounts, scheduled_posts
 from sqlalchemy.orm import Session
 from .core.database import get_db
 from app.api import auth
@@ -9,8 +9,7 @@ app = FastAPI(title="ASAP API")
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(social_accounts.router)
-
-app.include_router(users.router)
+app.include_router(scheduled_posts.router)
 
 @app.get("/")
 def read_root():
