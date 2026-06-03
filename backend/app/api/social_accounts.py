@@ -5,8 +5,8 @@ from typing import List
 from app.core.database import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
-from app.models.social_account import SocialAccount
-from app.schemas.social_account import SocialAccountCreate, SocialAccountResponse
+from app.models.social_accounts import SocialAccount
+from app.schemas.social_accounts import SocialAccountCreate, SocialAccountResponse
 
 router = APIRouter(prefix="/social-accounts", tags=["Social Accounts"])
 
