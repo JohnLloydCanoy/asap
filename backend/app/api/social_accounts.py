@@ -30,7 +30,6 @@ def connect_social_account(
         user_id=current_user.id 
     )
     
-
     db.add(new_account)
     db.commit()
     db.refresh(new_account)
