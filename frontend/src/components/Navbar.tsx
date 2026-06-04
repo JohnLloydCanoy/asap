@@ -48,7 +48,7 @@ export function Navbar() {
                 Sign In
             </Link>
             <Link 
-                href="/login" 
+                href="/signup" 
                 className="hidden md:inline-flex h-9 items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-700"
             >
                 Get Started
