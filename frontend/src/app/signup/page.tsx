@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import api from "../../lib/api"; 
+import { Label } from "@/components/ui/label";
 
 export default function SignUpPage() {
     const [fullName, setFullName] = useState("");
@@ -48,7 +49,7 @@ return (
 
         <form onSubmit={handleSignUp} className="space-y-4">
             <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <Label className="block text-sm font-medium text-gray-700 mb-1">Full Name</Label>
             <input
                 type="text"
                 value={fullName}
@@ -60,7 +61,7 @@ return (
             </div>
 
             <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <Label className="block text-sm font-medium text-gray-700 mb-1">Email Address</Label>
             <input
                 type="email"
                 value={email}
@@ -72,7 +73,7 @@ return (
             </div>
 
             <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <Label className="block text-sm font-medium text-gray-700 mb-1">Password</Label>
             <input
                 type="password"
                 value={password}
@@ -83,6 +84,21 @@ return (
                 required
             />
             </div>
+
+            <Label className="flex items-center space-x-2">
+            <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                required
+            />
+            <span className="text-sm text-gray-700">
+                I agree to the <Link href="/terms" className="text-blue-600 hover:underline">
+                Terms of Service
+                </Link> and <Link href="/privacy" className="text-blue-600 hover:underline">
+                Privacy Policy
+                </Link>
+            </span>
+            </Label>
 
             <button
             type="submit"
