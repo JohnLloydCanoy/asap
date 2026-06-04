@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ASAP",
-  description: "ASAP",
+  title: "ASAP - A Social Automation Platform",
+  description: "ASAP - Analytical Social Automation Platform",
 };
 
 export default function RootLayout({
