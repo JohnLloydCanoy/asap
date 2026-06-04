@@ -15,7 +15,10 @@ export default function SignUpPage() {
     const [cellNumber, setCellNumber] = useState("");
     const [sex, setSex] = useState("");
     const [email, setEmail] = useState("");
+    
+    // 1. New State for Password Confirmation
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     
     const [errorMsg, setErrorMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -26,8 +29,15 @@ export default function SignUpPage() {
         setIsLoading(true);
         setErrorMsg("");
 
+        // 2. Pre-flight Check: Do the passwords match?
+        if (password !== confirmPassword) {
+            setErrorMsg("❌ Passwords do not match. Please try again.");
+            setIsLoading(false);
+            return; // Stop the function here so it doesn't hit the backend
+        }
+
         try {
-            await api.post("/users/", {
+            await api.post("/users", {
                 first_name: firstName,
                 last_name: lastName,
                 middle_name: middleName,
@@ -39,7 +49,7 @@ export default function SignUpPage() {
                 is_active: true,
             });
 
-            router.push("/login?registered=true");
+            router.push("/accounts");
             
         } catch (error: any) {
             console.error(error);
@@ -65,7 +75,6 @@ export default function SignUpPage() {
                 </Link>
             </div>
 
-            {/* Increased max-width from max-w-md to max-w-xl to accommodate the grid */}
             <div className="max-w-xl w-full space-y-6 p-8 bg-white rounded-xl shadow-md border border-gray-200">
                 <div className="text-center">
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Create an Account</h1>
@@ -140,11 +149,12 @@ export default function SignUpPage() {
                                 <option value="">Select...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
 
-                    {/* Account Security */}
+                    {/* Account Security - Updated with Confirm Password */}
                     <div className="pt-2 space-y-4 border-t border-gray-100">
                         <div>
                             <Label className="block text-sm font-medium text-gray-700 mb-1 mt-2">Email Address *</Label>
@@ -158,17 +168,32 @@ export default function SignUpPage() {
                             />
                         </div>
 
-                        <div>
-                            <Label className="block text-sm font-medium text-gray-700 mb-1">Password *</Label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                minLength={8}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
-                            />
+                        {/* 3. New Grid for side-by-side passwords */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <Label className="block text-sm font-medium text-gray-700 mb-1">Password *</Label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    minLength={8}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <Label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</Label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    minLength={8}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
 
