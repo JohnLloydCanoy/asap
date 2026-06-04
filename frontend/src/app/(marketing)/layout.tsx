@@ -1,14 +1,17 @@
 import React from "react";
+import { Navbar } from "@/components/Navbar";
 
 export default function MarketingLayout({
     children,
-}: {
+    }: {
     children: React.ReactNode;
-}) {
+    }) {
     return (
-    <div className="marketing-wrapper">
-      {/* Landing page navbar can go here later */}
-        {children}
-    </div>
-    ) ;
+        <div className="relative flex min-h-screen flex-col">
+        <Navbar />
+        <main className="flex-1">
+            {children}
+        </main>
+        </div>
+    );
 }
