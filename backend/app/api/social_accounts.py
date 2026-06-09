@@ -14,7 +14,7 @@ router = APIRouter(prefix="/social-accounts", tags=["Social Accounts"])
 def connect_social_account(
     account_in: SocialAccountCreate, 
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user) # The Bouncer!
+    current_user: User = Depends(get_current_user) 
 ):
     """
     Connects a new social media account (e.g., Facebook, Twitter) to the currently logged-in user.
