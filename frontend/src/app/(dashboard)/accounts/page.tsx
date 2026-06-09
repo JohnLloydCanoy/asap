@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import { Globe } from "lucide-react";
-import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { FaTwitter, FaLinkedin, FaMastodon, FaPinterest } from "react-icons/fa";
+import { SiBluesky } from "react-icons/si"; 
 
 export default function AccountsPage() {
     const [connectedAccounts, setConnectedAccounts] = useState<any[]>([]);
-    
-
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+
     const platforms = [
-        { id: "twitter", name: "X (Twitter)", icon: FaTwitter, hoverText: "hover:text-neutral-900 hover:bg-neutral-100" },
+        { id: "x", name: "X (Twitter)", icon: FaTwitter, hoverText: "hover:text-neutral-900 hover:bg-neutral-100" },
         { id: "linkedin", name: "LinkedIn", icon: FaLinkedin, hoverText: "hover:text-blue-700 hover:bg-blue-50" },
-        { id: "instagram", name: "Instagram", icon: FaInstagram, hoverText: "hover:text-pink-600 hover:bg-pink-50" },
-        { id: "facebook", name: "Facebook", icon: FaFacebook, hoverText: "hover:text-blue-600 hover:bg-blue-50" },
-        { id: "bluesky", name: "Bluesky", icon: Globe, hoverText: "hover:text-sky-500 hover:bg-sky-50" },
+        { id: "bluesky", name: "Bluesky", icon: SiBluesky, hoverText: "hover:text-sky-500 hover:bg-sky-50" },
+        { id: "mastodon", name: "Mastodon", icon: FaMastodon, hoverText: "hover:text-indigo-600 hover:bg-indigo-50" },
+        { id: "pinterest", name: "Pinterest", icon: FaPinterest, hoverText: "hover:text-red-600 hover:bg-red-50" },
     ];
 
     const handleConnectPlatform = (platformId: string) => {
@@ -62,7 +62,7 @@ export default function AccountsPage() {
                 </div>
             )}
 
-            {/* THE CONNECT ACCOUNT MODAL */}
+
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                 <DialogContent className="sm:max-w-md bg-white">
                     <DialogHeader>
